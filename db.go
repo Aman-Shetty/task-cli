@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -12,9 +12,10 @@ var (
 )
 
 func initDatabase() {
-	DBConnection, err := gorm.Open("sqlite3", "tasks.db")
+	var err error
+	DBConnection, err = gorm.Open("sqlite3", "tasks.db")
 	if err != nil {
-		fmt.Printf("Error: Failed to connect to database. %v", DBConnection)
+		log.Fatal("Error: Failed to connect to database. ", err)
 	}
-	DBConnection.AutoMigrate(&task{})
+	DBConnection.AutoMigrate(&Task{})
 }
