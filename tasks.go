@@ -13,8 +13,6 @@ type Task struct {
 	gorm.Model
 	Description string
 	Status      string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
 }
 
 func addTask(description string) error {
@@ -30,8 +28,6 @@ func addTask(description string) error {
 	task := Task{
 		Description: description,
 		Status:      "todo",
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
 	}
 	db.Create(&task)
 	fmt.Printf("TASK ADDED: \n\tTask:%v \n\tStatus:%v \n\tCreated at:%v \n\tUpdated at:%v \n", task.Description, task.Status, task.CreatedAt, task.UpdatedAt)
@@ -108,11 +104,16 @@ func listTaskStatus(status string) error {
 
 	db := DBConnection
 	var tasks []Task
+	valid := false
 	STATUS := []string{"todo", "in-progress", "done"}
 	for _, s := range STATUS {
-		if s != status {
-			return fmt.Errorf("Invalid argument")
+		if s == status {
+			valid = true
 		}
+	}
+
+	if !valid {
+		return fmt.Errorf("Invalid argument: status must be one of 'todo', 'in-progress', or 'done'")
 	}
 	db.Where("status = ?", status).Find(&tasks)
 	if len(tasks) == 0 {
