@@ -6,7 +6,11 @@ import (
 )
 
 func main() {
+	initDatabase()
+
 	args := os.Args
+
+	defer DBConnection.Close()
 
 	if len(args) == 1 {
 		commandHelp()

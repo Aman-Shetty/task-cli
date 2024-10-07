@@ -1,9 +1,13 @@
 package main
 
-import "time"
+import (
+	"time"
+
+	"github.com/jinzhu/gorm"
+)
 
 type task struct {
-	id         int
+	gorm.Model
 	decription string
 	status     string
 	createdAt  time.Time
